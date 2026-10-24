@@ -1,0 +1,124 @@
+    1  ping 8.8.8.8
+    2  exit
+    3  history
+    4  hostnamectl set-hostname mephi-2026.domain.local
+    5  hostnamectl
+    6  hostname
+    7  ping -c 4 8.8.8.8 > ~/ping.out
+    8  cat ping.out 
+    9  ip a
+   10  dnf upgrade -y
+   11  dnf install -y nginx libcap-ng-utils
+   12  dnf download tcpdump --destdir=/tmp
+   13  rpm -Uvh /tmp/tcpdump-4.99.5-1.red80.aarch64.rpm 
+   14  which tcpdump
+   15  dnf history > ~/dnf.out
+   16  head dnf.out 
+   17  type tcpdumo
+   18  type tcpdump
+   19  exit
+   20  shutdown 0h now
+   21  shutdown -h now
+   22  history | less
+   23  lsblk
+   24  fdisk /dev/sdb
+   25  mkfs.ext4 -L MEPHI_WEB /dev/sdb1
+   26  mkdir /mephi-web
+   27  blkid /dev/sdb1
+   28  echo 'LABEL=MEPHI_WEB  /mephi-web  ext4  defaults  0  2' >> /etc/fstab
+   29  cat /etc/fstab 
+   30  mount /mephi-web
+   31  systemctl daemon-reload
+   32  df -h /mephi-web
+   33  umount /mephi-web 
+   34  mount -a
+   35  df -h /mephi-web
+   36  systemctl start nginx
+   37  systemctl enable nginx
+   38  systemctl status nginx.service 
+   39  journalctl -u nginx -b > ~/journalctl.out
+   40  cat ~/journalctl.out 
+   41  useradd -u 5501 -g devs user1
+   42  groupadd devs
+   43  useradd -u 5501 -g devs user1
+   44  useradd -u 5502 -g devs user2
+   45  useradd -u 5503 -g devs user3
+   46  mkdir -p /data/mephi-2026
+   47  groupadd -g 4444 curators
+   48  useradd -G curators curator1
+   49  useradd -G curators curator2
+   50  id user1
+   51  id curator1
+   52  chown root:devs /data/mephi-2026/
+   53  chmod 2770 /data/mephi-2026/
+   54  setfacl -m g:devs:rvx,g:curators:rx,o::--- /data/mephi-2026/
+   55  setfacl -m g:devs:rwx,g:curators:rx,o::--- /data/mephi-2026/
+   56  setfacl -d -m g:devs:rwx,g:curators:rx,0::--- /data/mephi-2026/
+   57  setfacl -d -m g:devs:rwx,g:curators:rx,o::--- /data/mephi-2026/
+   58  getfacl /data/mephi-2026/
+   59  su - user1 -c 'touch /data/mephi-2026/test1.txt'
+   60  ls -l /data/mephi-2026/
+   61  getfacl /data/mephi-2026/test1.txt 
+   62  su - user2 -c 'echo test >> /data/mephi-2026/test1.txt'
+   63  cat /data/mephi-2026/test1.txt 
+   64  su - curator1 -c 'cat /data/mephi-2026/test1.txt'
+   65  su - curator1 -c 'echo test2 >> /data/mephi-2026/test1.txt'
+   66  rm /data/mephi-2026/test1.txt 
+   67  ls /data/mephi-2026/
+   68  rm /data/mephi-2026/test1.txt 
+   69  tcpdump -h
+   70  type tcpdump 
+   71  ls -l /usr/sbin/tcpdump 
+   72  getcap /usr/sbin/tcpdump 
+   73  chmod u-s /usr/sbin/tcpdump 
+   74  setcap cap_net_raw,cap_net_admin=eip /usr/sbin/tcpdump 
+   75  getcap /usr/sbin/tcpdump 
+   76  sudo -u user1 tcpdump -c 1
+   77  getcap /usr/sbin/tcpdump > ~/getcap.out
+   78  cat getcap.out 
+   79  getenforce 
+   80  sestatus 
+   81  command -v semanage
+   82  getenforce > ~/getenforce.out
+   83  semanage -h
+   84  cat getenforce.out 
+   85  dnf install -y policycoreutils-python-utils
+   86  semanage -h
+   87  semanage fcontext -a -t httpd_sys_content_t "/mephi-web(/.*)?"
+   88  restorecon -Rv /mephi-web/
+   89  vi /etc/nginx/nginx.conf
+   90  nginx -t
+   91  systemctl restart nginx.service 
+   92  ls -lZ /mephi-web/
+   93  curl http://localhost
+   94  authselect current 
+   95  authselect enable-feature with-pamaccess 
+   96  authselect current 
+   97  vi /etc/security/access.conf 
+   98  cat /etc/security/access.conf | tail -2
+   99  su - curator1
+  100  authselect current 
+  101  cat /etc/pam.d/system-auth | grep -i "pam"
+  102  cat /etc/pam.d/su | grep -i "account"
+  103  exit
+  104  vi /etc/security/pwquality.conf
+  105  chage -M 90 user1
+  106  chage -M 90 user2
+  107  chage -M 90 user3
+  108  chage -M 90 curator1
+  109  chage -M 90 curator2
+  110  passwd user1
+  111  passwd curator1
+  112  exit
+  113  echo "Hello from Student: M265907 375520" > /mephi-web/index.html
+  114  restorecon -v /mephi-web/index.html 
+  115  cat /mephi-web/index.html 
+  116  curl http://localhost
+  117  curl http://localhost > ~/curl.out
+  118  cat ~/curl.out 
+  119  cat ~/dnf.out 
+  120  stat /data/mephi-2026/ > ~/stat.out
+  121  cat ~/stat.out 
+  122  stat /mephi-web >> ~/stat.out 
+  123  ls -la ~
+  124  history > ~/history.out
